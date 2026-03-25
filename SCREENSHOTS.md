@@ -2,51 +2,66 @@
 
 Halaman ini menampilkan daftar screenshot untuk materi promosi.
 
-## Daftar Screenshot Utama
+## Daftar Screenshot 
 
 1. Dashboard Overview
-   - File: img/dashboard-overview.png
+![Dashboard Overview](img/dashboard-overview.png)
+![Dashboard Overview (White)](img/dashboard-overview-white.png)
+![Dashboard Overview (Mobile)](img/dashboard-overview-mobile.png)
 2. User Management
-   - File: img/system-users.png
-3. Employee Management
-   - File: img/hr-employees.png
-4. Inventory Product List
-   - File: img/inventory-products.png
-5. Purchase Request
-   - File: img/procurement-pr.png
-6. Purchase Order
-   - File: img/procurement-po.png
-7. Goods Receipt
-   - File: img/procurement-gr.png
-8. Journal Entries
-   - File: img/finance-journal.png
-9. Accounts Payable
-   - File: img/finance-ap.png
-10. Work Order
-   - File: img/production-wo.png
-11. Fixed Assets
-   - File: img/assets-fixed-assets.png
-12. Financial Reports
-   - File: img/financial-reports.png
+![System Users](img/system-users.png)
+![System Users-more](img/system-users-2.png)
+3. Asset Categories
+![Asset Categories](img/asset-categories.png)
+![Asset Categories](img/asset-categories-2.png)
+4. Fixed Asset List
+![Fixed Asset List](img/fixed-asset.png)
+![Fixed Asset List](img/fixed-asset-2.png)
+5. Employee Management
+![HR Employees](img/hr-employees.png)
+![HR Employees](img/hr-employees-2.png)
+6. Inventory Product List
+![Inventory Products](img/inventory-products.png)
+![Inventory Products](img/inventory-products-2.png)
+7. Purchase Request
+![Purchase Request](img/procurement-pr.png)
+![Purchase Request](img/procurement-pr-2.png)
+8. Purchase Order
+![Purchase Order](img/procurement-po.png)
+![Purchase Order](img/procurement-po-2.png)
+9. Goods Receipt
+![Goods Receipt](img/procurement-gr.png)
+10. Financial Journal Entries
+![Journal Entries](img/jurnal-entries.png)
+![Journal Entries](img/jurnal-entries-2.png)
+11. Accounts Payable
+![Accounts Payable](img/finance-ap.png)
+12. Accounts Receivable
+![Accounts Receivable](img/finance-ar.png)
+13. Accounts Mapping
+![Accounts Mapping](img/acc-map.png)
+14. Work Order
+![Work Order](img/production-wo.png)
+![Work Order](img/production-wo-2.png)
+15. Bill of Materials
+![Bill of Materials](img/production-bom.png)
+![Bill of Materials](img/production-bom-2.png)
+16. Financial Reports
+![Financial Reports](img/financial-reports.png)
+![Financial Reports](img/financial-reports-2.png)
+![Financial Reports](img/financial-reports-3.png)
+![Financial Reports](img/financial-reports-4.png)
 
+17. Audit Log
+![Audit Log](img/audit.png)
 ## Preview
 
-![Dashboard Overview](img/dashboard-overview.png)
-![System Users](img/system-users.png)
-![HR Employees](img/hr-employees.png)
-![Inventory Products](img/inventory-products.png)
-![Purchase Request](img/procurement-pr.png)
-![Purchase Order](img/procurement-po.png)
-![Goods Receipt](img/procurement-gr.png)
-![Journal Entries](img/finance-journal.png)
-![Accounts Payable](img/finance-ap.png)
-![Work Order](img/production-wo.png)
-![Fixed Assets](img/assets-fixed-assets.png)
-![Financial Reports](img/financial-reports.png)
 
-## Panduan Ambil Screenshot
 
-- Gunakan data demo yang sudah rapi dan realistis.
-- Gunakan resolusi konsisten 16:9 jika memungkinkan.
-- Hindari data sensitif (email nyata, nomor telepon pribadi, kredensial).
-- Simpan file sesuai nama di atas agar link tetap valid.
+
+
+
+
+
+
+

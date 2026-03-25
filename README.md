@@ -30,7 +30,7 @@ Manufacture Admin dirancang untuk perusahaan manufaktur yang ingin menjalankan p
 ## Preview Screenshot
 
 ![Dashboard Overview](img/dashboard-overview.png)
-![Procurement Flow](img/procurement-flow.png)
+![Dashboard Overview (White)](img/dashboard-overview-white.png)
 ![Financial Reports](img/financial-reports.png)
 
 Lihat daftar lengkap di [SCREENSHOTS.md](SCREENSHOTS.md).
