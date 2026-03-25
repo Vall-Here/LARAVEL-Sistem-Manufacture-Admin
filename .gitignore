@@ -1,0 +1,7 @@
+# Keep this repository focused on public promo content
+
+implementation/
+
+# Common noise
+.DS_Store
+Thumbs.db
