@@ -1,103 +1,813 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Manufacture Admin</title>
-    <meta
-      name="description"
-      content="ERP manufaktur berbasis web untuk mengelola operasi lintas departemen dalam satu panel admin terintegrasi."
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacture Admin - ERP Manufaktur Terintegrasi</title>
+    <meta name="description" content="ERP manufaktur berbasis web untuk mengelola operasi lintas departemen dalam satu panel admin terintegrasi.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-      :root {
-        color-scheme: light;
-      }
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        line-height: 1.6;
-        color: #0f172a;
-        background: #f8fafc;
-      }
-      .container {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 24px;
-      }
-      h1, h2 {
-        line-height: 1.25;
-      }
-      .card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 16px;
-      }
-      ul {
-        padding-left: 20px;
-      }
-      .links a {
-        display: inline-block;
-        margin: 4px 10px 4px 0;
-      }
-      .preview {
-        display: grid;
-        gap: 12px;
-      }
-      .preview img {
-        width: 100%;
-        height: auto;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-      }
-      a {
-        color: #2563eb;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #10b981;
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            line-height: 1.2;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        p {
+            color: var(--text-muted);
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 5%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-icon {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 5% 8rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0e7ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(79,70,229,0.05) 0%, rgba(255,255,255,0) 70%);
+            z-index: 0;
+            animation: pulse 15s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 1.5rem;
+            background: -webkit-linear-gradient(45deg, #1e1b4b, #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: #475569;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+            margin-left: 1rem;
+        }
+
+        .btn-outline:hover {
+            background: rgba(79, 70, 229, 0.05);
+            box-shadow: none;
+        }
+
+        .hero-image-wrapper {
+            margin-top: 5rem;
+            position: relative;
+            z-index: 1;
+            perspective: 1000px;
+        }
+
+        .hero-image {
+            max-width: 90%;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            transform: rotateX(5deg) scale(0.95);
+            transition: transform 0.5s ease;
+        }
+        
+        .hero-image-wrapper:hover .hero-image {
+            transform: rotateX(0deg) scale(1);
+        }
+
+        /* Section layout */
+        section {
+            padding: 8rem 5%;
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: #e0e7ff;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            border-radius: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card ul li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+            color: var(--text-muted);
+        }
+
+        .feature-card ul li::before {
+            content: '✓';
+            color: var(--primary);
+            margin-right: 0.75rem;
+            font-weight: bold;
+            background: #e0e7ff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        /* Screenshots / Gallery */
+        .gallery-container {
+            column-count: 3;
+            column-gap: 1.5rem;
+            margin-top: 4rem;
+        }
+        @media (max-width: 1024px) { .gallery-container { column-count: 2; } }
+        @media (max-width: 640px) { .gallery-container { column-count: 1; } }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            background: white;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            border-radius: 12px;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            border-color: var(--primary);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+        
+        .gallery-item::after {
+            content: '🔍 Lihat Layar Penuh';
+            position: absolute;
+            top: 0.5rem; left: 0.5rem; right: 0.5rem; bottom: 0.5rem;
+            background: rgba(30, 27, 75, 0.7);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+            backdrop-filter: blur(2px);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .lightbox-close:hover {
+            color: #f87171;
+        }
+
+        /* Tech Stack & Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+            align-items: center;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.15);
+            transform: scale(1.05);
+            background: linear-gradient(to bottom, #ffffff, #f5f3ff);
+        }
+        
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 1.5rem 0;
+            letter-spacing: -0.05em;
+        }
+        
+        .price span {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: normal;
+            letter-spacing: normal;
+        }
+
+        /* Tech Stack Labels */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .tech-tag {
+            background: white;
+            color: var(--text-main);
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 4rem 5% 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; /* simple mobile handling */ }
+            .pricing-card.popular { transform: none; }
+            .pricing-card.popular:hover { transform: translateY(-5px); }
+        }
     </style>
-  </head>
-  <body>
-    <main class="container">
-      <section class="card">
-        <h1>Manufacture Admin</h1>
-        <p>
-          ERP manufaktur berbasis web untuk mengelola operasi lintas departemen dalam satu panel admin
-          terintegrasi.
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">
+            <div class="logo-icon">M</div>
+            Manufacture Admin
+        </a>
+        <div class="nav-links">
+            <a href="#features">Fitur</a>
+            <a href="#screenshots">Tampilan</a>
+            <a href="#tech">Teknologi</a>
+            <a href="#pricing">Harga</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Sistem ERP Manufaktur Terintegrasi</h1>
+            <p>Kelola operasi lintas departemen mulai dari HR, Inventory, Procurement, Finance, hingga Produksi dalam satu panel admin cerdas.</p>
+            <div>
+                <a href="#features" class="btn">Jelajahi Fitur</a>
+                <a href="#screenshots" class="btn btn-outline">Lihat Antarmuka</a>
+            </div>
+        </div>
+        <div class="hero-image-wrapper">
+            <img src="img/dashboard-overview.png" alt="Dashboard Preview" class="hero-image" loading="lazy">
+        </div>
+    </header>
+
+    <section id="features">
+        <h2>Fitur Utama Platform</h2>
+        <p style="text-align: center; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Solusi end-to-end yang dirancang khusus untuk memenuhi kompleksitas proses bisnis manufaktur modern.</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>System & HR</h3>
+                <ul>
+                    <li>Multi-user & role management</li>
+                    <li>Master data karyawan terpusat</li>
+                    <li>Pencatatan attendance & leave</li>
+                    <li>Payroll processing & slip gaji</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Inventory Control</h3>
+                <ul>
+                    <li>Master produk & varian kategori</li>
+                    <li>Monitoring stok real-time</li>
+                    <li>Stock adjustment & tracking ledger</li>
+                    <li>Sistem alert reorder point</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛒</div>
+                <h3>Procurement</h3>
+                <ul>
+                    <li>Purchase Request (PR) & Approval</li>
+                    <li>Konversi mulus ke Purchase Order (PO)</li>
+                    <li>Goods Receipt & update stok otomatis</li>
+                    <li>Vendor management</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Finance & Accounting</h3>
+                <ul>
+                    <li>Manajemen Accounts Payable & Receivable</li>
+                    <li>Auto jurnal dari setiap transaksi</li>
+                    <li>Trial balance & balance sheet otomatis</li>
+                    <li>Income & cash flow statement real-time</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏭</div>
+                <h3>Production</h3>
+                <ul>
+                    <li>Manajemen Bill of Material (BOM)</li>
+                    <li>Work Order (WO) tracking proaktif</li>
+                    <li>Pencatatan output produksi & reject</li>
+                    <li>Integrasi material issue ke stok</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏢</div>
+                <h3>Asset Management</h3>
+                <ul>
+                    <li>Master data fixed asset</li>
+                    <li>Tracking siklus aset (aktif, disposed)</li>
+                    <li>Penjadwalan maintenance rutin</li>
+                    <li>Depreciation posting otomatis</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="screenshots" style="background: white;">
+        <h2>Gallery & Tampilan Antarmuka</h2>
+        <p style="text-align: center; margin-bottom: 1rem; font-size: 1.1rem;">Desain UI/UX yang modern, bersih, dan intuitif memudahkan pengguna baru.</p>
+        <p style="text-align: center; color: var(--primary); font-weight: 500;">(Klik gambar untuk memperbesar kualitas penuh)</p>
+        
+        <div class="gallery-container">
+            <!-- Selected high quality screenshots -->
+            <div class="gallery-item" onclick="openLightbox('img/dashboard-overview.png')">
+                <img src="img/dashboard-overview.png" alt="Dashboard Overview" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/financial-reports.png')">
+                <img src="img/financial-reports.png" alt="Financial Reports" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/production-wo.png')">
+                <img src="img/production-wo.png" alt="Work Order" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/inventory-products.png')">
+                <img src="img/inventory-products.png" alt="Inventory Products" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/procurement-po.png')">
+                <img src="img/procurement-po.png" alt="Purchase Order" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/hr-employees.png')">
+                <img src="img/hr-employees.png" alt="HR Employees" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/jurnal-entries.png')">
+                <img src="img/jurnal-entries.png" alt="Journal Entries" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/finance-ap.png')">
+                <img src="img/finance-ap.png" alt="Accounts Payable" loading="lazy">
+            </div>
+            <div class="gallery-item" onclick="openLightbox('img/production-bom.png')">
+                <img src="img/production-bom.png" alt="Bill of Materials" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section id="tech">
+        <h2>Tech Stack Modern & Aman</h2>
+        <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+            Dibangun dengan fondasi teknologi terkini untuk memastikan performa yang cepat, stabilitas sistem, serta keamanan data perusahaan Anda.
         </p>
-      </section>
+        <div class="tech-tags">
+            <span class="tech-tag">🛡️ Laravel 11</span>
+            <span class="tech-tag">🐘 PHP 8.2+</span>
+            <span class="tech-tag">🎨 Filament 3</span>
+            <span class="tech-tag">⚡ Livewire</span>
+            <span class="tech-tag">🚀 Vite</span>
+            <span class="tech-tag">🗄️ MySQL / PostgreSQL</span>
+            <span class="tech-tag">💨 Redis</span>
+            <span class="tech-tag">🔒 Spatie Permission</span>
+        </div>
+    </section>
 
-      <section class="card">
-        <h2>Ringkasan Produk</h2>
-        <ul>
-          <li>HR dan payroll</li>
-          <li>inventory dan kontrol stok</li>
-          <li>procurement dengan approval workflow</li>
-          <li>finance dengan auto jurnal</li>
-          <li>production berbasis BOM dan work order</li>
-          <li>asset management, maintenance, dan depresiasi</li>
-        </ul>
-      </section>
+    <section id="pricing" style="background: white;">
+        <h2>Investasi Transparan</h2>
+        <p style="text-align: center; font-size: 1.1rem;">Skema harga yang fleksibel untuk berbagai skala bisnis manufaktur.</p>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 style="color: var(--text-muted); font-size: 1.25rem; margin-bottom: 2rem;">Layanan Tambahan</h3>
+                <div style="text-align: left;">
+                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Implementasi 30 Hari</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Setup, training, UAT, go-live assistance</p>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 1.5rem;">Rp 500.000</div>
+                    
+                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Migrasi Data Awal</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Bantuan mapping dan import data</p>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);">Mulai Rp 300.000</div>
+                </div>
+            </div>
+            
+            <div class="pricing-card popular">
+                <div class="pricing-badge">Paling Laris - Lisensi Penuh</div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--primary);">Paket Business</h3>
+                <p>Lisensi lengkap tanpa batasan fitur.</p>
+                <div class="price">Rp 2.500.000 <span>/ lisensi</span></div>
+                
+                <ul style="text-align: left; margin-top: 2rem; list-style: none;">
+                    <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--secondary); font-weight: bold;">✓</span> Semua modul inti (HR, Inventory, Finance)
+                    </li>
+                    <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--secondary); font-weight: bold;">✓</span> Modul Khusus Production
+                    </li>
+                    <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--secondary); font-weight: bold;">✓</span> Modul Khusus Assets
+                    </li>
+                    <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--secondary); font-weight: bold;">✓</span> Dashboard Monitoring Lengkap
+                    </li>
+                </ul>
+                <a href="mailto:contact@example.com" class="btn" style="width: 100%; margin-top: 1.5rem;">Hubungi Kami Sekarang</a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem; color: var(--text-muted); font-size: 0.9rem; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+            * Harga belum termasuk infrastruktur server dan domain perusahaan Anda.<br>
+            * Penawaran resmi akan menggunakan proposal dan ruang lingkup (scope) tertulis.<br>
+            * Skema Pembayaran: 50% saat kontrak disetujui, 30% saat UAT, 20% saat Go-Live.
+        </div>
+    </section>
 
-      <section class="card">
-        <h2>Dokumen Promosi</h2>
-        <p class="links">
-          <a href="FEATURES.md">Fitur yang Ditawarkan</a>
-          <a href="SCREENSHOTS.md">Screenshot Produk</a>
-          <a href="TECH-STACK.md">Tech Stack</a>
-          <a href="PRICING.md">Paket Harga</a>
-        </p>
-      </section>
+    <footer>
+        <div class="footer-content">
+            <a href="#" class="footer-logo">Manufacture Admin</a>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#features" style="color: #94a3b8; text-decoration: none;">Fitur</a>
+                <a href="#screenshots" style="color: #94a3b8; text-decoration: none;">Gallery</a>
+                <a href="#pricing" style="color: #94a3b8; text-decoration: none;">Harga</a>
+            </div>
+        </div>
+        <p>&copy; 2026 Manufacture Admin. Hak Cipta Dilindungi.</p>
+    </footer>
 
-      <section class="card preview">
-        <h2>Preview Screenshot</h2>
-        <img src="img/dashboard-overview.png" alt="Dashboard Overview" />
-        <img src="img/dashboard-overview-white.png" alt="Dashboard Overview White" />
-        <img src="img/financial-reports.png" alt="Financial Reports" />
-      </section>
-    </main>
-  </body>
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close" title="Tutup">&times;</span>
+        <img id="lightbox-img" src="" alt="Preview">
+    </div>
+
+    <script>
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            
+            // Wait for transition before resetting src to avoid flash
+            setTimeout(() => {
+                const lightboxImg = document.getElementById('lightbox-img');
+                if(!lightbox.classList.contains('active')) {
+                    lightboxImg.src = "";
+                }
+            }, 300);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeLightbox();
+            }
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
 </html>
