@@ -1,114 +1,41 @@
-# Manual Departemen - System Administration
+# Sistem & Administrasi
 
-## Tujuan
+Modul **System Settings** adalah ruang kendali utama bagi *Super Administrator*. Anda dapat mengelola otorisasi, hak akses, dan pengaturan global perusahaan di sini.
 
-Manual ini dipakai oleh super admin dan company admin untuk mengelola konfigurasi sistem, pengguna, role, dan kontrol akses.
+## 1. Manajemen Pengguna (Users)
 
-## Role yang Menggunakan
+Bagian ini digunakan untuk memberi izin login kepada karyawan.
 
-- super_admin
-- company_admin
-- auditor (view audit sesuai hak akses)
+1. Buka **System > Users**.
+2. Anda akan melihat daftar akun yang bisa masuk ke ERP.
+3. Anda dapat men-klik *Edit* pada pengguna tertentu untuk mengubah *Roles* (Peran) mereka.
+4. **Catatan:** Biasakan membuat *User* melalui menu **HR > Karyawan**. Sistem otomatis akan membuatkan akun *User* dan menautkannya dengan data absensi karyawan tersebut.
 
-## Menu yang Digunakan
+## 2. Hak Akses (Roles & Permissions)
 
-- System > Company Settings
-- System > Users
-- System > Roles & Permissions
-- System > Audit Log
+Sistem menggunakan model berbasis *Spatie Permission*, yang memberikan kontrol granular (sangat detail) terhadap siapa yang bisa melihat atau mengedit menu tertentu.
 
-## SOP Harian
+1. Buka **System > Roles & Permissions**.
+2. Anda bisa membuat *Role* baru (contoh: `Warehouse Manager`).
+3. Anda bisa mencentang kotak-kotak izin (*Permissions*), misalnya: `inventory.view`, `inventory.create`, `inventory.update`.
+4. Setelah *Role* disimpan, masuk ke menu **Users** dan berikan *Role* ini ke staf gudang Anda. Mereka hanya akan bisa melihat menu Gudang saat login!
 
-1. Verifikasi user baru/keluar dari HR dan update akun di menu Users.
-2. Pastikan role user sesuai fungsi kerja (least privilege).
-3. Tinjau audit log untuk aktivitas sensitif.
-4. Tindak lanjuti akun yang gagal login berulang.
+## 3. Company Settings (Pengaturan Perusahaan)
 
-## SOP Mingguan
+Pengaturan ini menyimpan data fundamental yang akan muncul di dokumen cetak (Invoice, DO, dll).
 
-1. Review akun tidak aktif atau tidak dipakai.
-2. Revoke semua sesi untuk akun risiko tinggi jika diperlukan.
-3. Validasi konsistensi role dengan struktur organisasi terbaru.
+Buka **System Settings > Company Setting**:
+- **Company Name**: Nama resmi badan usaha.
+- **Tax Number (NPWP)**: Akan tercetak di dokumen Faktur Pajak.
+- **Default Currency**: Mata uang utama (`IDR`).
 
-## SOP Bulanan
+## 4. Jejak Audit (Audit Log)
 
-1. Review Company Settings:
-   - identitas perusahaan
-   - timezone dan fiscal year
-   - konfigurasi payroll dan inventory
-   - format nomor dokumen
-2. Review Account Mapping minimal:
-   - default_cash
-   - default_bank
-   - accounts_payable
-   - accounts_receivable
-   - inventory_raw_material
-   - inventory_finished_good
-   - salary_expense
-   - tax_payable
-3. Uji kirim email dari Company Settings (test email).
+Sistem ERP ini merekam **setiap tindakan penting** yang dilakukan oleh *user* (terutama operasi hapus atau ubah harga/jumlah).
 
-## Langkah Operasional Detail
+1. Buka **System > Audit Log**.
+2. Administrator dapat memantau jika ada kecurangan atau perubahan data yang tidak sah.
+3. Anda bisa memfilter berdasarkan *User* atau Modul untuk mempersempit pencarian investigasi.
 
-### A. Kelola Company Settings
-
-1. Buka menu Company Settings.
-2. Lengkapi blok data:
-   - Identitas Perusahaan
-   - Pengaturan Sistem
-   - Pengaturan Penggajian
-   - Pengaturan Inventory
-   - Account Mapping
-   - Email Configuration
-   - Nomor Dokumen
-3. Simpan dan pastikan notifikasi sukses muncul.
-4. Jika ganti SMTP, lakukan test email sebelum tutup sesi.
-
-### B. Kelola User
-
-1. Buat user baru melalui menu Users.
-2. Isi nama, email, password, dan role.
-3. Opsional: link ke data karyawan.
-4. Saat user resign atau mutasi:
-   - nonaktifkan user atau ubah role
-   - revoke sesi lama
-5. Untuk insiden keamanan:
-   - lakukan reset password
-   - aktifkan force password change
-
-### C. Kelola Role dan Permission
-
-1. Role & Permissions hanya dikelola super_admin.
-2. Gunakan pola berikut:
-   - role entry: input data/transaksi
-   - role approver: approval final
-   - role reviewer/auditor: monitor dan evaluasi
-3. Hindari pemberian hak create, approve, dan void ke user yang sama kecuali ada alasan kontrol internal.
-
-## Kontrol Internal Wajib
-
-- Pisahkan fungsi input dan approval.
-- Batasi impersonate hanya untuk super_admin.
-- Simpan bukti perubahan hak akses (change log internal).
-- Gunakan password policy minimal 8 karakter dan rotasi berkala.
-
-## Troubleshooting Umum
-
-1. User tidak bisa login:
-   - cek company code
-   - cek status aktif user
-   - cek role masih melekat
-2. Menu hilang pada user:
-   - cek permission role
-   - cek user berada pada company yang benar
-3. Email notifikasi tidak terkirim:
-   - cek SMTP host/port/credential
-   - lakukan test email dari Company Settings
-
-## Checklist Serah Terima Admin
-
-- [ ] Company Settings lengkap
-- [ ] Mapping akun wajib sudah terisi
-- [ ] Struktur role final sudah disetujui manajemen
-- [ ] Daftar user aktif valid
-- [ ] SOP reset password dan revoke session dipahami admin
+> [!CAUTION]
+> Jangan pernah memberikan *Role* **Super Admin** kepada staf biasa. Super Admin bisa melewati semua *Approval Workflow* dan melihat seluruh laporan keuangan yang sensitif!

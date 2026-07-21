@@ -1,109 +1,71 @@
-# Manual Departemen - Assets
+# Manajemen Aset (Fixed Assets)
 
-## Tujuan
+Modul **Manajemen Aset** digunakan untuk melacak dan mengelola seluruh aset tetap (*fixed assets*) perusahaan, mulai dari pembelian, perhitungan depresiasi, hingga pelepasan (*disposal*).
 
-Manual ini memandu tim Assets mengelola siklus aset tetap, penjadwalan maintenance, dan posting depresiasi bulanan.
+## Gambaran Umum Alur Kerja
 
-## Role yang Menggunakan
+```mermaid
+graph TD
+    A[Beli Aset Baru] --> B(Daftarkan ke Sistem)
+    B --> C{Pemeliharaan Rutin}
+    C --> D[Penyusutan Otomatis]
+    D --> E[Pelepasan / Disposal]
+```
 
-- asset_manager
-- finance_manager (sinkron depresiasi)
-- auditor
+---
 
-## Menu yang Digunakan
+## 1. Kategori Aset
 
-- Assets > Asset Categories
-- Assets > Fixed Assets
-- Fixed Asset Detail > Depreciation Logs
-- Fixed Asset Detail > Maintenance Schedules
+Mengelompokkan aset memudahkan pelaporan dan pengaturan metode depresiasi (penyusutan).
 
-## Status Aset
+### Cara Membuat Kategori Aset:
+1. Buka menu **Assets > Asset Categories**.
+2. Klik tombol **New Asset Category**.
+3. Isi informasi berikut:
+   - **Code**: Kode unik kategori (contoh: `VEH` untuk Kendaraan).
+   - **Name**: Nama kategori (contoh: *Kendaraan Operasional*).
+   - **Depreciation Method**: Pilih antara *Straight Line* (Garis Lurus) atau *Declining Balance* (Saldo Menurun).
+   - **Useful Life (Years)**: Estimasi umur ekonomis aset dalam tahun.
+4. Klik **Create**.
 
-- draft
-- active
-- disposed
+---
 
-## SOP Harian
+## 2. Pendaftaran Aset Baru
 
-1. Catat aset baru segera setelah perolehan.
-2. Pastikan lokasi aset terbaru tercatat.
-3. Tinjau jadwal maintenance mendekati jatuh tempo.
+Setiap aset fisik yang dibeli atau dimiliki harus dicatat ke dalam sistem.
 
-## SOP Mingguan
+### Langkah-langkah Mendaftarkan Aset:
+1. Navigasi ke menu **Assets > Fixed Assets**.
+2. Klik **New Fixed Asset**.
+3. Lengkapi formulir pendaftaran:
+   - **Kategori**: Pilih dari daftar yang sudah dibuat.
+   - **Nama & Kode**: Beri nama jelas (contoh: *Mesin Genset 5000W*) dan kode inventaris.
+   - **Harga Beli (Purchase Cost)**: Masukkan harga perolehan awal.
+   - **Nilai Residu (Salvage Value)**: Estimasi nilai sisa aset di akhir umur ekonomis.
+   - **Tanggal Akuisisi**: Tanggal aset mulai digunakan.
+4. Klik **Create**.
 
-1. Follow up maintenance planned dan in_progress.
-2. Update status maintenance selesai/cancelled sesuai kondisi lapangan.
-3. Validasi aset yang tidak produktif untuk rencana disposal.
+> [!TIP]
+> Tempelkan label *Barcode/QR Code* (dari kode inventaris) pada fisik aset agar mudah dilacak saat audit tahunan.
 
-## SOP Bulanan
+---
 
-1. Posting depresiasi untuk aset aktif.
-2. Rekonsiliasi nilai buku dengan tim Finance.
-3. Review aset yang akan disposisi atau penggantian.
+## 3. Perhitungan Penyusutan (Depresiasi)
 
-## Langkah Operasional Detail
+Sistem akan otomatis menghitung beban penyusutan berdasarkan **Kategori Aset** yang Anda pilih. 
 
-### A. Kelola Kategori Aset
+### Kapan Penyusutan Dihitung?
+- Penyusutan berjalan secara otomatis di latar belakang pada akhir setiap bulan.
+- Nilai Buku (*Book Value*) aset akan terus berkurang hingga mencapai Nilai Residu.
+- Jurnal Keuangan untuk Beban Penyusutan akan **otomatis terbentuk** di modul *Finance*.
 
-1. Definisikan kategori aset aktif.
-2. Gunakan kategori konsisten untuk pelaporan dan audit.
+---
 
-### B. Kelola Fixed Asset
+## 4. Pelepasan Aset (Disposal)
 
-1. Buat fixed asset baru.
-2. Isi data wajib:
-   - kode aset
-   - nama aset
-   - kategori
-   - tanggal perolehan
-   - nilai perolehan
-   - nilai residu
-   - umur manfaat (bulan)
-   - metode depresiasi
-3. Simpan aset dalam status draft.
-4. Jalankan Activate saat aset siap dipakai.
+Jika aset dijual, rusak, atau dihibahkan, Anda harus mencatatnya sebagai *Disposed*.
 
-### C. Schedule Maintenance
-
-1. Pada aset aktif, klik Schedule Maintenance.
-2. Isi tanggal jadwal, tipe, dan deskripsi.
-3. Pantau notifikasi due maintenance harian (scheduler).
-
-### D. Post Depreciation
-
-1. Pada aset aktif, klik Post Depreciation.
-2. Isi periode bulan dan tahun.
-3. Simpan untuk membuat log depresiasi dan jurnal terkait.
-
-### E. Dispose Asset
-
-1. Pastikan ada persetujuan internal disposal.
-2. Jalankan aksi Dispose pada aset aktif.
-3. Isi catatan disposal.
-4. Verifikasi status berubah menjadi disposed.
-
-## Kontrol Internal Wajib
-
-- Data nilai aset harus didukung dokumen perolehan.
-- Depresiasi diposting rutin di akhir periode.
-- Disposal harus memiliki approval manajemen.
-- Maintenance kritis harus dipantau lewat scheduler harian.
-
-## Troubleshooting Umum
-
-1. Depresiasi gagal diposting:
-   - cek aset berstatus active
-   - cek account mapping terkait depresiasi
-2. Maintenance due tidak muncul notifikasi:
-   - cek scheduler notify:maintenance-due aktif
-   - cek status maintenance masih planned
-3. Aset tidak bisa diedit:
-   - aset disposed memang dibatasi dari edit rutin
-
-## Checklist Asset Governance
-
-- [ ] Kategori aset sudah standar
-- [ ] Semua aset aktif memiliki umur manfaat
-- [ ] Maintenance schedule aset kritikal sudah terisi
-- [ ] Depresiasi bulan berjalan selesai diposting
-- [ ] Daftar aset disposed tervalidasi dokumennya
+1. Buka halaman detail **Fixed Asset** yang bersangkutan.
+2. Ubah statusnya dari **Active** menjadi **Disposed**.
+3. Masukkan **Tanggal Pelepasan**.
+4. *(Opsional)* Jika aset dijual, buat jurnal manual di modul *Finance* untuk mencatat pemasukan kas dan selisih laba/rugi penjualan aset.

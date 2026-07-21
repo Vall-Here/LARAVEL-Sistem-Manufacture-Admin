@@ -1,97 +1,67 @@
-# Manual Departemen - Inventory
+# Manajemen Inventori & WMS (Warehouse Management System)
 
-## Tujuan
+Modul **Inventory & WMS** mengontrol seluruh pergerakan barang (material masuk, keluar, dan transfer antar gudang) serta memastikan keakuratan stok secara *real-time*.
 
-Manual ini memandu tim Inventory menjaga akurasi stok, melakukan penyesuaian yang terkontrol, dan memantau pergerakan barang melalui ledger.
+## Gambaran Alur Pergerakan Stok
 
-## Role yang Menggunakan
+```mermaid
+graph TD
+    A(Penerimaan Barang / GR) -->|Stok Bertambah| B[Gudang Utama]
+    B -->|Transfer Internal| C[Gudang Produksi]
+    C -->|Bahan Baku Dipakai| D(Proses Produksi)
+    D -->|Barang Jadi Masuk| E[Gudang Barang Jadi]
+    E -->|Delivery Order| F(Pelanggan)
+```
 
-- inventory_manager
-- inventory_staff
-- auditor (view)
+---
 
-## Menu yang Digunakan
+## 1. Master Produk (Products)
 
-- Inventory > Products
-- Product Detail > Stock Ledger
-- Dashboard > Stock Alert
+Semua barang, baik itu bahan baku (*raw material*), barang setengah jadi (*WIP*), maupun barang jadi (*finished goods*) harus didaftarkan di sini.
 
-## SOP Harian
+### Menambahkan Produk Baru
+1. Buka **Inventory & WMS > Produk**.
+2. Klik **New Produk**.
+3. Lengkapi data:
+   - **SKU**: Kode unik barang (dapat di-*generate* otomatis jika dikosongkan).
+   - **Tipe Produk**: Pilih apakah barang ini aset, bahan baku, atau barang jadi.
+   - **Batas Stok (Reorder Point)**: Stok minimum di mana sistem akan memberikan peringatan (warna merah di tabel).
+4. Klik **Create**.
 
-1. Monitor produk dengan stok rendah dari dashboard dan daftar produk.
-2. Pastikan setiap pergerakan stok berasal dari transaksi resmi (GR, produksi, adjustment berizin).
-3. Validasi produk nonaktif agar tidak dipakai transaksi baru.
+> [!TIP]
+> **Cetak Barcode Label**: Anda dapat mencetak barcode langsung dari halaman tabel Produk. Centang produk, lalu klik tombol **Print Barcode** (ikon QR) untuk mencetak stiker fisik.
 
-## SOP Mingguan
+---
 
-1. Review produk dengan stok negatif atau tidak wajar.
-2. Cocokkan saldo ledger terhadap transaksi Procurement dan Production.
-3. Lakukan adjustment hanya untuk koreksi yang disetujui.
+## 2. Penyesuaian Stok Manual (Stock Adjustment)
 
-## SOP Bulanan
+Terkadang jumlah stok fisik di gudang berbeda dengan di sistem (misal: karena hilang, rusak, atau salah hitung). Anda bisa melakukan penyesuaian manual.
 
-1. Jalankan stock opname internal.
-2. Tuntaskan selisih stok dengan berita acara adjustment.
-3. Serahkan hasil rekonsiliasi ke Finance untuk tutup buku.
+1. Buka tabel **Produk**.
+2. Di pojok kanan atas, klik tombol **Adjust Stock**.
+3. Pilih produk, gudang, dan masukkan jumlah (*qty*).
+4. Pilih tipe: **Penambahan** atau **Pengurangan**.
+5. Wajib masukkan alasan (contoh: *Barang rusak karena bocor*).
+6. Konfirmasi.
 
-## Langkah Operasional Detail
+---
 
-### A. Kelola Master Produk
+## 3. Transfer Antar Gudang (Inter-Warehouse Transfer)
 
-1. Buka menu Products.
-2. Isi data inti:
-   - SKU
-   - nama produk
-   - kategori
-   - satuan
-   - tipe produk (raw_material/work_in_progress/finished_good/consumable/asset)
-3. Isi parameter kontrol:
-   - min stock
-   - max stock
-   - reorder point
-   - standard cost
+Gunakan fitur ini untuk memindahkan stok dari Gudang A ke Gudang B.
 
-### B. Monitor Stok Saat Ini
+1. Buka **Inventory & WMS > Inter Warehouse Transfer**.
+2. Klik **New Transfer**.
+3. Pilih **Gudang Asal (Source)** dan **Gudang Tujuan (Destination)**.
+4. Tambahkan *Items* (produk apa saja yang mau dipindah beserta jumlahnya).
+5. Simpan sebagai draft.
+6. Saat barang benar-benar dikirim/diterima secara fisik, ubah statusnya menjadi **Completed**. Stok di gudang asal akan otomatis berkurang, dan gudang tujuan akan bertambah.
 
-1. Gunakan kolom Stok Saat Ini pada daftar produk.
-2. Prioritaskan produk dengan indikator di bawah reorder point.
-3. Konfirmasi kebutuhan pembelian ke tim Procurement.
+---
 
-### C. Penyesuaian Stok (Adjust Stock)
+## 4. Pelacakan Buku Besar (Stock Ledger)
 
-1. Aksi Adjust Stock hanya untuk inventory_manager.
-2. Pilih produk, gudang, qty, tipe penyesuaian, dan alasan.
-3. Pastikan alasan jelas dan dapat diaudit.
-4. Simpan bukti fisik/surat koreksi di arsip internal.
-
-### D. Audit Ledger Produk
-
-1. Buka detail produk.
-2. Tinjau relation Stock Ledger.
-3. Verifikasi reference_type transaksi (manual_adjustment, goods_receipt, work_order, dsb).
-
-## Kontrol Internal Wajib
-
-- Larangan edit saldo langsung di database.
-- Semua koreksi stok wajib melalui adjustment beralasan.
-- Pisahkan petugas opname dan petugas approval koreksi.
-
-## Troubleshooting Umum
-
-1. Stok negatif:
-   - cek urutan transaksi dan tanggal input
-   - cek apakah ada pengeluaran tanpa penerimaan sebelumnya
-2. Stok tidak sesuai fisik:
-   - lakukan cycle count
-   - input adjustment dengan dokumentasi bukti
-3. Produk tidak bisa dipilih di transaksi:
-   - cek status produk aktif
-   - cek relasi satuan/kategori
-
-## Checklist Stock Control
-
-- [ ] Master produk inti sudah lengkap
-- [ ] Reorder point seluruh produk utama sudah terdefinisi
-- [ ] Semua adjustment memiliki alasan dan bukti
-- [ ] Ledger mingguan telah direview
-- [ ] Hasil stock opname bulanan terdokumentasi
+Untuk melihat kronologi kenapa stok sebuah barang bisa sejumlah X:
+- Buka detail produk tersebut.
+- Scroll ke bawah pada halaman *View*.
+- Anda akan melihat tabel **Stock Ledger Relation** yang mencatat setiap in/out secara mendetail (siapa yang mengubah, lewat transaksi apa, tanggal berapa).

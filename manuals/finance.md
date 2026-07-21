@@ -1,108 +1,60 @@
-# Manual Departemen - Finance
+# Keuangan & Akuntansi (Finance)
 
-## Tujuan
+Modul **Finance** adalah jantung dari ERP. Modul ini terintegrasi langsung dengan modul *Sales*, *Procurement*, dan *Asset*, sehingga Anda tidak perlu lagi membuat jurnal secara manual untuk transaksi sehari-hari!
 
-Manual ini memandu tim Finance mengelola account mapping, AR/AP, jurnal, dan penutupan periode dengan integritas pembukuan.
+## 1. Integrasi Jurnal Otomatis
 
-## Role yang Menggunakan
+Sistem secara cerdas membaca setiap transaksi yang terjadi di departemen lain dan membuat jurnal ganda (*Double-Entry Journal*) secara *real-time*.
 
-- finance_manager
-- finance_staff
-- auditor
+```mermaid
+graph LR
+    A(Sales Invoice Lunas) -->|Otomatis| D[Jurnal Kas Masuk & Piutang Berkurang]
+    B(Purchase Order Valid) -->|Otomatis| E[Jurnal Utang Bertambah & Aset/Biaya Bertambah]
+    C(Penyusutan Aset) -->|Otomatis| F[Jurnal Biaya Penyusutan]
+```
 
-## Menu yang Digunakan
+---
 
-- Finance > Journal Entries
-- Finance > Account Mappings
-- Finance > Accounts Payable
-- Finance > Accounts Receivable
+## 2. Manajemen Utang & Piutang (AP / AR)
 
-## SOP Harian
+Pantau arus kas masa depan dengan mengawasi piutang pelanggan dan utang *supplier*.
 
-1. Pantau AR/AP jatuh tempo.
-2. Catat pembayaran AP (Record Payment) yang sudah dibayar.
-3. Catat penerimaan AR (Record Receipt) yang sudah diterima.
-4. Review jurnal posted dan validasi saldo debit-kredit.
+### Accounts Payable (Utang)
+1. Buka **Finance > Accounts Payable**.
+2. Anda akan melihat daftar tagihan dari vendor (bersumber dari *Purchase Order*).
+3. Untuk melakukan pembayaran, klik ikon **Edit** atau **View**.
+4. Ubah status menjadi **Paid** dan pilih metode pembayaran (Kas/Bank). Jurnal pembayaran akan otomatis terbentuk.
 
-## SOP Mingguan
+### Accounts Receivable (Piutang)
+1. Buka **Finance > Accounts Receivable**.
+2. Daftar piutang dari pelanggan (bersumber dari *Sales Invoice*) akan tampil.
+3. Saat pelanggan membayar, perbarui status invoice menjadi **Paid**. Uang akan tercatat masuk ke kas perusahaan.
 
-1. Review jurnal void/reversal untuk transaksi koreksi.
-2. Validasi mapping akun utama tidak berubah tanpa persetujuan.
-3. Rekonsiliasi AR/AP dengan Procurement dan Sales/Admin.
+---
 
-## SOP Bulanan
+## 3. Account Mappings (Pemetaan Akun)
 
-1. Pastikan semua transaksi periode sudah masuk.
-2. Posting item bulanan (termasuk depresiasi dari modul Assets).
-3. Jalankan pemanasan cache laporan bulanan:
-   - php artisan reports:generate
-4. Review laporan:
-   - trial balance
-   - balance sheet
-   - income statement
-   - cash flow statement
+Agar penjurnalan otomatis berjalan lancar, Anda harus memberitahu sistem akun mana yang digunakan untuk setiap tipe transaksi.
 
-## Langkah Operasional Detail
+**Cara Memetakan Akun:**
+1. Masuk ke **Finance > Account Mappings**.
+2. Di sini Anda akan melihat kunci-kunci sistem (*mapping keys*) seperti `sales_revenue`, `inventory_asset`, `accounts_payable`, dll.
+3. Pastikan setiap kunci dipetakan ke Kode Akun (Chart of Account) yang benar (contoh: `sales_revenue` dipetakan ke akun *Pendapatan Penjualan* - `400-10`).
 
-### A. Account Mapping
+> [!WARNING]
+> Jangan mengubah *Account Mappings* di pertengahan bulan buku jika Anda tidak paham dampaknya terhadap Laporan Keuangan berjalan. Konsultasikan dengan Akuntan Kepala.
 
-1. Buka Account Mappings.
-2. Pastikan mapping key wajib terisi akun aktif.
-3. Mapping penting:
-   - default_cash
-   - default_bank
-   - accounts_receivable
-   - accounts_payable
-   - inventory_raw_material
-   - inventory_finished_good
-   - salary_expense
-   - tax_payable
+---
 
-### B. Kelola Accounts Payable
+## 4. Laporan Keuangan (Financial Reports)
 
-1. AP terbentuk dari proses goods receipt/jurnal otomatis.
-2. Buka AP outstanding.
-3. Klik Record Payment saat pembayaran dilakukan.
-4. Isi amount, payment date, payment source, note.
-5. Sistem membuat jurnal pembayaran AP otomatis.
+Sistem mampu menghasilkan laporan keuangan instan kapan pun Anda butuhkan.
 
-### C. Kelola Accounts Receivable
+Buka **Finance > Financial Reports**:
+- **Buku Besar (General Ledger)**: Menampilkan rincian setiap pergerakan akun.
+- **Neraca Saldo (Trial Balance)**: Ringkasan saldo debet-kredit seluruh akun.
+- **Laba/Rugi (Income Statement)**: Melihat apakah perusahaan sedang untung atau rugi.
+- **Neraca (Balance Sheet)**: Potret kekayaan perusahaan (Aset, Kewajiban, Modal).
 
-1. Buat invoice AR dari menu Accounts Receivable.
-2. Isi invoice number, invoice date, due date, amount.
-3. Saat ada penerimaan, klik Record Receipt.
-4. Isi amount, payment date, payment source, note.
-5. Sistem membuat jurnal penerimaan AR otomatis.
-
-### D. Kontrol Journal Entry
-
-1. Gunakan Journal Entries untuk audit pembukuan.
-2. Untuk koreksi transaksi tertentu, gunakan aksi Void jika memenuhi syarat.
-3. Void akan membuat jurnal reversal otomatis dan menandai jurnal asal sebagai voided.
-
-## Kontrol Internal Wajib
-
-- Dilarang edit manual jurnal otomatis tanpa prosedur koreksi.
-- Void jurnal wajib disertai alasan yang jelas.
-- Rekonsiliasi bank/kas dilakukan periodik.
-- Pisahkan petugas input penerimaan/pembayaran dari approver akhir.
-
-## Troubleshooting Umum
-
-1. Payment/receipt gagal:
-   - cek outstanding tidak nol
-   - cek amount tidak melebihi outstanding
-2. Jurnal tidak bisa di-void:
-   - cek status jurnal harus posted
-   - cek reference_type termasuk yang diizinkan
-3. Laporan tidak update:
-   - jalankan reports:generate
-   - cek transaksi posted pada periode terkait
-
-## Checklist Closing Finance
-
-- [ ] Seluruh AR/AP periode direkonsiliasi
-- [ ] Jurnal koreksi sudah selesai
-- [ ] Depresiasi bulanan sudah diposting
-- [ ] Laporan TB/BS/IS/CF sudah direview
-- [ ] Arsip laporan dan bukti closing tersimpan
+> [!TIP]
+> Gunakan tombol filter **Tanggal (Date Range)** untuk melihat laporan periode tertentu (misal: Q1 2026), lalu klik **Export to Excel** untuk analisa lebih lanjut!

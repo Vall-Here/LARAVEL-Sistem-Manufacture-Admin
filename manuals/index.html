@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Buku Panduan - Manufacture Admin ERP</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Buku panduan resmi untuk Manufacture Admin ERP">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  
+  <!-- Theme: Vue -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  
+  <style>
+    :root {
+      --theme-color: #4f46e5;
+    }
+    .app-nav {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+    .app-name-link {
+        font-weight: 800 !important;
+    }
+    .markdown-section {
+        max-width: 900px;
+    }
+    .markdown-section blockquote {
+        border-left-color: var(--theme-color);
+        background-color: #f8fafc;
+        padding: 10px 15px;
+        border-radius: 4px;
+    }
+    .back-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #f1f5f9;
+        color: #334155;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-right: 15px;
+        transition: background-color 0.3s;
+    }
+    .back-btn:hover {
+        background-color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">Memuat Buku Panduan...</div>
+  
+  <script>
+    window.$docsify = {
+      name: 'Manufacture ERP',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      themeColor: '#4f46e5',
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Cari panduan...',
+        noData: 'Tidak ditemukan!',
+        depth: 3
+      },
+      copyCode: {
+        buttonText : 'Salin',
+        errorText  : 'Error',
+        successText: 'Disalin'
+      },
+      pagination: {
+        previousText: 'SEBELUMNYA',
+        nextText: 'SELANJUTNYA',
+        crossChapter: true,
+        crossChapterText: true,
+      }
+    }
+  </script>
+  
+  <!-- Docsify v4 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  
+  <!-- Plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  
+  <!-- Mermaid -->
+  <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false });
+    window.$docsify.plugins = [
+      function (hook, vm) {
+        hook.ready(function () {
+          mermaid.initialize({ startOnLoad: false });
+        });
+        hook.doneEach(function () {
+          mermaid.init(undefined, '.mermaid');
+        });
+      }
+    ].concat(window.$docsify.plugins || []);
+  </script>
+</body>
+</html>

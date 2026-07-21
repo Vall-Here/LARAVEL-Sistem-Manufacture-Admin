@@ -1,109 +1,55 @@
-# Manual Departemen - Production
+# Produksi (Manufacturing & MRP)
 
-## Tujuan
+Modul **Production** adalah letak keunikan ERP Manufaktur ini. Di sini Anda mendefinisikan formula produk, mengeluarkan bahan baku, hingga menghasilkan barang jadi.
 
-Manual ini memandu tim Production menjalankan perencanaan produksi berbasis BOM dan work order, termasuk pencatatan output serta konsumsi material.
+## Alur Produksi
 
-## Role yang Menggunakan
+```mermaid
+graph TD
+    A(Bill of Materials BOM) --> B(Work Order WO)
+    B --> C(Material Issue / Pengambilan Bahan)
+    C --> D(Produksi Berjalan)
+    D --> E(Quality Control)
+    E --> F(Finished Good Diterima di Gudang)
+```
 
-- production_manager
-- production_staff
-- inventory_manager (koordinasi material)
+---
 
-## Menu yang Digunakan
+## 1. Bill of Materials (BOM) / Resep Produksi
 
-- Production > Bill Of Materials
-- Production > Work Orders
+BOM adalah "resep masakan" untuk membuat suatu barang jadi (*Finished Good*). Anda harus mendefinisikan BOM sebelum bisa melakukan proses produksi.
 
-## Status Dokumen Utama
+1. Buka **Production & MRP > Bill Of Materials**.
+2. Klik **New BOM**.
+3. **Product**: Pilih barang jadi yang akan dibuat.
+4. **Quantity**: Masukkan angka dasar resep (contoh: Untuk membuat *100 Kemeja*, butuh bahan apa saja?).
+5. **Komponen (Components)**: Tambahkan daftar bahan baku (*Raw Material*) beserta jumlah kebutuhannya secara presisi.
+6. Simpan.
 
-### Bill Of Material
+---
 
-- draft
-- active
-- obsolete
+## 2. Work Orders (Surat Perintah Kerja)
 
-### Work Order
+Saat pabrik siap memproduksi, Anda perlu menerbitkan *Work Order* (WO).
 
-- draft
-- released
-- in_progress
-- completed
-- cancelled
+1. Buka **Production & MRP > Work Orders**.
+2. Klik **New Work Order**.
+3. Pilih *Product* yang ingin diproduksi.
+4. Pilih resep **BOM**-nya.
+5. Masukkan **Planned Quantity** (jumlah yang ingin diproduksi hari ini). Sistem akan secara ajaib **menghitung otomatis** total kebutuhan bahan baku di tabel komponen!
+6. Tentukan tanggal mulai (*Start Date*) dan tanggal selesai (*End Date*).
+7. Klik **Create**.
 
-## SOP Harian
+---
 
-1. Validasi BOM aktif untuk produk yang akan diproduksi.
-2. Buat work order baru sesuai rencana produksi.
-3. Release work order sebelum eksekusi.
-4. Catat output produksi melalui Record Output.
-5. Koordinasi dengan Inventory untuk validasi pergerakan material.
+## 3. Eksekusi Produksi & Pemakaian Material
 
-## SOP Mingguan
+Setelah WO berstatus **In Progress**, Anda harus mengeluarkan bahan baku dari gudang (Proses ini disebut *Material Issue*).
 
-1. Review WO terlambat atau belum selesai.
-2. Bandingkan planned qty vs produced qty vs rejected qty.
-3. Evaluasi scrap/reject dan tindak perbaikan proses.
+1. Buka detail *Work Order* Anda.
+2. Di bagian tabel material, verifikasi ketersediaan stok.
+3. Ubah status produksi jika bahan baku sudah dipakai.
+4. Saat fisik barang jadi selesai diproduksi, laporkan jumlah barang bagus (*Good Qty*) dan barang cacat (*Reject Qty*).
 
-## Langkah Operasional Detail
-
-### A. Kelola BOM
-
-1. Buat BOM dengan data:
-   - kode BOM
-   - produk output
-   - output qty
-   - satuan
-   - status
-2. Tambahkan material item:
-   - material product
-   - qty required
-   - wastage percent
-3. Aktifkan BOM yang siap dipakai produksi.
-
-### B. Buat dan Release Work Order
-
-1. Buat WO dari BOM.
-2. Isi planned qty, due date, catatan.
-3. Setelah diverifikasi, klik Release.
-
-### C. Record Output Produksi
-
-1. Buka WO berstatus released/in_progress.
-2. Klik Record Output.
-3. Isi data:
-   - warehouse
-   - good qty
-   - rejected qty
-   - unit cost (opsional)
-4. Simpan transaksi.
-5. Sistem akan:
-   - issue material sesuai kebutuhan BOM
-   - mencatat output produk jadi
-   - update status WO (in_progress/completed)
-
-## Kontrol Internal Wajib
-
-- WO tidak boleh dijalankan tanpa BOM valid.
-- Semua output wajib tercatat pada hari transaksi.
-- Selisih reject harus dianalisis penyebabnya.
-- Perubahan BOM wajib melalui persetujuan internal.
-
-## Troubleshooting Umum
-
-1. Record Output gagal:
-   - cek status WO (harus released/in_progress)
-   - cek warehouse terpilih
-   - cek qty tidak nol
-2. WO tidak bisa release:
-   - cek status masih draft
-3. Material issue tidak masuk stok:
-   - cek integrasi stock ledger dan referensi work_order
-
-## Checklist Produksi
-
-- [ ] BOM produk utama aktif dan valid
-- [ ] Semua WO harian sudah direlease
-- [ ] Output dan reject tercatat lengkap
-- [ ] WO selesai ditutup dengan status completed
-- [ ] Laporan efisiensi reject dibahas mingguan
+> [!WARNING]
+> Memasukkan barang hasil produksi (Goods Output) akan **menambah** stok barang jadi di gudang, sekaligus memotong stok bahan baku berdasarkan persentase aktual. Jika proses ini memicu alarm stok habis pada bahan baku, modul *Inventory* akan memperingatkan staf *Procurement* untuk melakukan pembelian ulang (*Reorder*).
